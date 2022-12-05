@@ -45,7 +45,7 @@ wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw`;
 
-const rucksackData = require("./data/3-rucksack");
+import { data } from "./data/3-rucksack";
 
 const findBadge = (group) => {
   let badge = "";
@@ -72,7 +72,7 @@ const findBadge = (group) => {
   return badge;
 };
 
-const calcPriorities = (input) => {
+const calcPriorities = (input: string) => {
   const contentsPerRuksack = input.split("\n");
 
   const priorityValue = contentsPerRuksack.reduce((priority, _, i, array) => {
@@ -86,4 +86,4 @@ const calcPriorities = (input) => {
   console.log(priorityValue);
 };
 
-calcPriorities(rucksackData);
+calcPriorities(data);

@@ -1,3 +1,4 @@
+import { cleanups } from "./data/4-camp-cleanup";
 /*
 
 Part 1
@@ -8,8 +9,6 @@ const testInput = `2-4,6-8
 2-8,3-7
 6-6,4-6
 2-6,4-8`;
-
-const cleanups = require("./data/4-camp-cleanup");
 
 const findContained = (input) => {
   const assignments = input.split("\n");
@@ -38,7 +37,7 @@ const findContained = (input) => {
 
 */
 
-const findContained = (input) => {
+const findContained = (input: string) => {
   const assignments = input.split("\n");
 
   const contained = assignments.reduce((acc, entry) => {
