@@ -47,7 +47,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw`;
 
 import { data } from "./data/3-rucksack";
 
-const findBadge = (group) => {
+const findBadge = (group: string[]) => {
   let badge = "";
   let cants = "";
 
@@ -60,7 +60,7 @@ const findBadge = (group) => {
         return !cants.includes(letter) && second.includes(letter);
       }
       return second.includes(letter);
-    });
+    }) as string;
     const matchThird = third.includes(matchSecond);
 
     if (matchThird) {

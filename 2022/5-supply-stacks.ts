@@ -10,12 +10,14 @@ move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2`;
 
-const handleStacksOne = (input: string) => {
-  const [initial, instructions] = input.split("\n\n");
-  const rows = initial.split("\n");
+interface IRow {
+  [key: string]: string;
+}
 
-  const emptyRow: { [key: string]: string } = {};
-  const stack = rows.reduce((acc: { [key: string]: string }[], row, i) => {
+const emptyRow: IRow = {};
+
+const createStack = (rows: string[]) => {
+  return rows.reduce((acc: { [key: string]: string }[], row, i) => {
     const formattedRow = row.split("    ").join(" [ ] ");
     const initialValues = formattedRow.match(/(?<=\[).+?(?=\])/g);
     if (!initialValues) return acc;
@@ -30,35 +32,50 @@ const handleStacksOne = (input: string) => {
 
     return acc;
   }, []);
+};
 
-  const moves = instructions.split("\n");
-  moves.forEach((move) => {
-    const numbers = move.match(/\d+/g) as string[];
-
-    for (let i = 0; i < parseInt(numbers[0]); i++) {
-      // minus 1 to get the row above the one that has a value
-      let targetRow = stack.findIndex((row) => row[numbers[2]]) - 1;
-
-      if (targetRow === -1) {
-        stack.unshift(JSON.parse(JSON.stringify(emptyRow)));
-        targetRow = 0;
-      } else if (targetRow === -2) {
-        targetRow = stack.length - 1;
-      }
-
-      const rowWithCrate = stack.findIndex((row) => row[numbers[1]]);
-      stack[targetRow][numbers[2]] = stack[rowWithCrate][numbers[1]];
-      stack[rowWithCrate][numbers[1]] = "";
-    }
-  });
-
-  const output = Object.keys(emptyRow).reduce((acc, index) => {
+const getTopCrates = (stack: IRow[]) => {
+  return Object.keys(emptyRow).reduce((acc, index) => {
     const temp = stack.find((row) => row[index]);
     acc += temp?.[index];
     return acc;
   }, "");
+};
 
+const moveCrates9000 = (stack: IRow[], move: string) => {
+  const numbers = move.match(/\d+/g) as string[];
+
+  for (let i = 0; i < parseInt(numbers[0]); i++) {
+    // minus 1 to get the row above the one that has a value
+    let targetRow = stack.findIndex((row) => row[numbers[2]]) - 1;
+
+    if (targetRow === -1) {
+      stack.unshift(JSON.parse(JSON.stringify(emptyRow)));
+      targetRow = 0;
+    } else if (targetRow === -2) {
+      targetRow = stack.length - 1;
+    }
+
+    const rowWithCrate = stack.findIndex((row) => row[numbers[1]]);
+    stack[targetRow][numbers[2]] = stack[rowWithCrate][numbers[1]];
+    stack[rowWithCrate][numbers[1]] = "";
+  }
+};
+
+const moveCrates9001 = (stack: IRow[], move: string) => {};
+
+const handleStacks = (input: string) => {
+  const [initial, instructions] = input.split("\n\n");
+  const rows = initial.split("\n");
+  const moves = instructions.split("\n");
+
+  const stack = createStack(rows);
+
+  //   moves.forEach((move) => moveCrates9000(stack, move));
+  moves.forEach((move) => moveCrates9001(stack, move));
+
+  const output = getTopCrates(stack);
   console.log(output);
 };
 
-handleStacksOne(inputData);
+handleStacks(testInput);

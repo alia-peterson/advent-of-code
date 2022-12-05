@@ -16,13 +16,7 @@ const testInput = `
 
 10000`;
 
-/*
-
-Part 1
-
-const findElfWithMostCalories = (input) => {
-  const calorieList = input.split(" ")[0].split("\n");
-
+const getHighest = (calorieList: string[]) => {
   let highest = 0;
   let temp = 0;
 
@@ -43,18 +37,13 @@ const findElfWithMostCalories = (input) => {
     highest = temp;
   }
 
-  console.log(highest);
+  return { highest };
 };
 
-findElfWithMostCalories(input);
-*/
-
-const findElfWithMostCalories = (input) => {
-  const calorieList = input.split(" ")[0].split("\n");
-
+const getThreeHighest = (calorieList: string[]) => {
   let low = 0;
   let mid = 0;
-  let highest = 0;
+  let high = 0;
 
   let temp = 0;
 
@@ -64,12 +53,12 @@ const findElfWithMostCalories = (input) => {
     if (!isNaN(numEntry)) {
       temp += numEntry;
     } else {
-      if (temp > highest) {
+      if (temp > high) {
         low = mid;
-        mid = highest;
-        highest = temp;
+        mid = high;
+        high = temp;
       } else if (temp > mid) {
-        mid = highest;
+        mid = high;
         mid = temp;
       } else if (temp > low) {
         low = temp;
@@ -78,7 +67,17 @@ const findElfWithMostCalories = (input) => {
     }
   }
 
-  console.log(low + mid + highest);
+  return { low, mid, high };
+};
+
+const findElfWithMostCalories = (input: string) => {
+  const calorieList = input.split(" ")[0].split("\n");
+
+  const { highest } = getHighest(calorieList);
+  console.log(highest);
+
+  const { low, mid, high } = getThreeHighest(calorieList);
+  console.log(low + mid + high);
 };
 
 findElfWithMostCalories(calories);
