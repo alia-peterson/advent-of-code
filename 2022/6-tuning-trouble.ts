@@ -1,12 +1,8 @@
-const testInput = `mjqjpqmgbljsphdztnvjfqwrcgsmlb`;
-const testInput1 = `bvwbjplbgvbhsrlpgdmjqwftvncz`;
-const testInput2 = `nppdvjthqldpwncqszvftbrmjlhg`;
-const testInput3 = `nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg`;
-const testInput4 = `zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw`;
+const testInput = `zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw`;
 
 import { data } from "./data/6-tuning-trouble";
 
-const findSequence = (input: string) => {
+const findSequence = (input: string, characters: number) => {
   let temp = "";
   let marker = 0;
 
@@ -20,7 +16,7 @@ const findSequence = (input: string) => {
       temp += letter;
     }
 
-    if (temp.length === 4) {
+    if (temp.length === characters) {
       marker = i + 1;
       break;
     }
@@ -29,4 +25,4 @@ const findSequence = (input: string) => {
   console.log(marker);
 };
 
-findSequence(data);
+findSequence(data, 14);
