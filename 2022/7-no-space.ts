@@ -33,9 +33,7 @@ const handleCdCommand = (command: string, acc: TDirectory) => {
   if (dir === "..") {
     const updated = acc.path.split("/");
     acc.path = updated.slice(0, updated.length - 1).join("/");
-  } else if (dir === "/") {
-    // do nothing
-  } else {
+  } else if (dir !== "/") {
     if (!acc.path) {
       acc.path = dir;
     } else {
@@ -46,7 +44,6 @@ const handleCdCommand = (command: string, acc: TDirectory) => {
 
 const handleDirCommand = (command: string, acc: TDirectory) => {
   const [, directory] = command.split("dir ");
-  // add directory to output object { a: 0 }
   if (!acc.path) {
     acc.output[directory] = 0;
   } else {
@@ -79,7 +76,7 @@ const generateDirectory = (commands: string[]) => {
   );
 };
 
-const calculateCombinedFiles = (directory: TFolders) => {
+const generateCombinedFolders = (directory: TFolders) => {
   return Object.keys(directory).reduce(
     (acc: { [key: string]: number }, name) => {
       acc[name] = 0;
@@ -97,10 +94,10 @@ const calculateCombinedFiles = (directory: TFolders) => {
 };
 
 const calculateFoldersUnderSize = (
-  combinedSizes: TFolders,
+  combinedFolders: TFolders,
   maxSize: number
 ) => {
-  return Object.values(combinedSizes).reduce((acc, size) => {
+  return Object.values(combinedFolders).reduce((acc, size) => {
     if (size <= maxSize) {
       acc += size;
     }
@@ -108,14 +105,26 @@ const calculateFoldersUnderSize = (
   }, 0);
 };
 
+const findFolderToDelete = (
+  combinedFolders: TFolders,
+  spaceToClear: number
+) => {
+  const dirSizes = Object.values(combinedFolders).sort((a, b) => a - b);
+  return dirSizes.find((folderSize) => folderSize >= spaceToClear);
+};
+
 const findDirectorySizes = (input: string) => {
   const commands = input.split("\n");
 
   const directory = generateDirectory(commands);
-  const combinedFiles = calculateCombinedFiles(directory.output);
-  const total = calculateFoldersUnderSize(combinedFiles, 100000);
+  const combinedFolders = generateCombinedFolders(directory.output);
+  const folderSizeUnder = calculateFoldersUnderSize(combinedFolders, 100000);
 
-  console.log(total);
+  const spaceToClear = 30000000 - (70000000 - combinedFolders[""]);
+  const folderToDelete = findFolderToDelete(combinedFolders, spaceToClear);
+
+  console.log(folderSizeUnder);
+  console.log(folderToDelete);
 };
 
 findDirectorySizes(commands);
