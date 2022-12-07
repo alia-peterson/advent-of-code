@@ -48,10 +48,7 @@ type TMove = {
   machine: number;
 };
 
-const handleMove = ({ stack, move, machine }: TMove) => {
-  const numbers = move.match(/\d+/g) as string[];
-  const [howMany, fromCol, toCol] = numbers;
-
+const getCratesToMove = (stack: IRow[], howMany: string, fromCol: string) => {
   const cratesToMove: string[] = [];
   for (let i = 0; i < parseInt(howMany); i++) {
     const rowNumber = stack.findIndex((row) => row[fromCol]);
@@ -60,11 +57,10 @@ const handleMove = ({ stack, move, machine }: TMove) => {
     cratesToMove.push(stack[rowNumber][fromCol]);
     stack[rowNumber][fromCol] = "";
   }
+  return cratesToMove;
+};
 
-  if (machine === 9001) {
-    cratesToMove.reverse();
-  }
-
+const handleMove = (stack: IRow[], cratesToMove: string[], toCol: string) => {
   cratesToMove.forEach((crate) => {
     let toRow = stack.findIndex((row) => row[toCol]) - 1;
 
@@ -78,6 +74,19 @@ const handleMove = ({ stack, move, machine }: TMove) => {
   });
 };
 
+const handleMoveCrates = ({ stack, move, machine }: TMove) => {
+  const numbers = move.match(/\d+/g) as string[];
+  const [howMany, fromCol, toCol] = numbers;
+
+  const cratesToMove = getCratesToMove(stack, howMany, fromCol);
+
+  if (machine === 9001) {
+    cratesToMove.reverse();
+  }
+
+  handleMove(stack, cratesToMove, toCol);
+};
+
 const handleStacks = (input: string) => {
   const [initial, instructions] = input.split("\n\n");
   const rows = initial.split("\n");
@@ -85,8 +94,8 @@ const handleStacks = (input: string) => {
 
   const stack = createStack(rows);
 
-  // moves.forEach((move) => handleMove({ stack, move, machine: 9000 }));
-  moves.forEach((move) => handleMove({ stack, move, machine: 9001 }));
+  // moves.forEach((move) => handleMoveCrates({ stack, move, machine: 9000 }));
+  moves.forEach((move) => handleMoveCrates({ stack, move, machine: 9001 }));
 
   const output = getTopCrates(stack);
   console.log(output);
