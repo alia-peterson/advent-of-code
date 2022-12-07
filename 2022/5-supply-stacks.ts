@@ -42,52 +42,40 @@ const getTopCrates = (stack: IRow[]) => {
   }, "");
 };
 
-type TType = {
+type TMove = {
   stack: IRow[];
-  fromCol: string;
-  toCol: string;
-  toRow: number;
+  move: string;
+  machine: number;
 };
 
-const moveCrates = ({ stack, fromCol, toCol, toRow }: TType) => {
-  const rowWithCrate = stack.findIndex((row) => row[fromCol]);
-
-  stack[toRow][toCol] = stack[rowWithCrate][fromCol];
-  stack[rowWithCrate][fromCol] = "";
-};
-
-const moveCrates9000 = (stack: IRow[], numbers: string[]) => {
-  // minus 1 to get the row above the one that has a value
-  let toRow = stack.findIndex((row) => row[numbers[2]]) - 1;
-  console.log({ toRow });
-
-  if (toRow === -1) {
-    stack.unshift(JSON.parse(JSON.stringify(emptyRow)));
-    toRow = 0;
-  } else if (toRow < -1) {
-    toRow = stack.length - 1;
-  }
-  return toRow;
-};
-
-// const moveCrates9001 = () => {};
-
-const handleMoveCrates = (stack: IRow[], move: string, machine: number) => {
+const handleMove = ({ stack, move, machine }: TMove) => {
   const numbers = move.match(/\d+/g) as string[];
-  console.log({ move });
+  const [howMany, fromCol, toCol] = numbers;
 
-  for (let i = 0; i < parseInt(numbers[0]); i++) {
-    const toRow = moveCrates9000(stack, numbers);
+  const cratesToMove: string[] = [];
+  for (let i = 0; i < parseInt(howMany); i++) {
+    const rowNumber = stack.findIndex((row) => row[fromCol]);
+    if (rowNumber === -1) continue;
 
-    console.log({ stack });
-    moveCrates({
-      stack,
-      fromCol: numbers[1],
-      toCol: numbers[2],
-      toRow,
-    });
-    console.log({ stack });
+    cratesToMove.push(stack[rowNumber][fromCol]);
+    stack[rowNumber][fromCol] = "";
   }
+
+  if (machine === 9001) {
+    cratesToMove.reverse();
+  }
+
+  cratesToMove.forEach((crate) => {
+    let toRow = stack.findIndex((row) => row[toCol]) - 1;
+
+    if (toRow === -1) {
+      stack.unshift(JSON.parse(JSON.stringify(emptyRow)));
+      toRow = 0;
+    } else if (toRow < -1) {
+      toRow = stack.length - 1;
+    }
+    stack[toRow][toCol] = crate;
+  });
 };
 
 const handleStacks = (input: string) => {
@@ -97,10 +85,11 @@ const handleStacks = (input: string) => {
 
   const stack = createStack(rows);
 
-  moves.forEach((move) => handleMoveCrates(stack, move, 9000));
+  // moves.forEach((move) => handleMove({ stack, move, machine: 9000 }));
+  moves.forEach((move) => handleMove({ stack, move, machine: 9001 }));
 
   const output = getTopCrates(stack);
   console.log(output);
 };
 
-handleStacks(testInput);
+handleStacks(inputData);
