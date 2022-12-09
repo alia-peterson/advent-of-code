@@ -1,4 +1,4 @@
-import { calories } from "./data/1-calorie-counting";
+import { calories } from "./data";
 
 const testInput = `
 1000

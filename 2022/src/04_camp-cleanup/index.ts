@@ -1,4 +1,4 @@
-import { cleanups } from "./data/4-camp-cleanup";
+import { cleanups } from "./data";
 
 const testInput = `2-4,6-8
 2-3,4-5

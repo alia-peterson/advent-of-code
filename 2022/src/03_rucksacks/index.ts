@@ -45,7 +45,7 @@ wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw`;
 
-import { data } from "./data/3-rucksack";
+import { data } from "./data";
 
 const findBadge = (group: string[]) => {
   let badge = "";

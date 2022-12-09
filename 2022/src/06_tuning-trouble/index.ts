@@ -1,6 +1,6 @@
 const testInput = `zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw`;
 
-import { data } from "./data/6-tuning-trouble";
+import { data } from "./data";
 
 const findSequence = (input: string, characters: number) => {
   let temp = "";

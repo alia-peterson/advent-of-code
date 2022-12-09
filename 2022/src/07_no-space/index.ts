@@ -22,7 +22,7 @@ $ ls
 5626152 d.ext
 7214296 k`;
 
-import { commands } from "./data/7-no-space";
+import { commands } from "./data";
 
 type TFolders = { [key: string]: number };
 

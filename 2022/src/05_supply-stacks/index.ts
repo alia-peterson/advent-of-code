@@ -1,4 +1,4 @@
-import { inputData } from "./data/5-supply-stacks";
+import { inputData } from "./data";
 
 const testInput = `    [D]    
 [N] [C]    

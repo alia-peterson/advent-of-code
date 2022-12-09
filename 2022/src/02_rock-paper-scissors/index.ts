@@ -2,7 +2,7 @@ const testInput = `A Y
 B X
 C Z`;
 
-import { rounds } from "./data/2-rock-paper-scissors";
+import { rounds } from "./data";
 
 /*
 
