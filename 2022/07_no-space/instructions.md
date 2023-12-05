@@ -1,4 +1,7 @@
---- Day 7: No Space Left On Device ---
+# Day 7: No Space Left On Device
+
+## Part One
+
 You can hear birds chirping and raindrops hitting leaves as the expedition proceeds. Occasionally, you can even hear much louder sounds in the distance; how big do the animals get out here, anyway?
 
 The device the Elves gave you has problems with more than just its communication system. You try to run a system update:
@@ -71,7 +74,8 @@ Find all of the directories with a total size of at most 100000. What is the sum
 
 Your puzzle answer was 1325919.
 
---- Part Two ---
+## Part Two
+
 Now, you're ready to choose a directory to delete.
 
 The total disk space available to the filesystem is 70000000. To run the update, you need unused space of at least 30000000. You need to find a directory you can delete that will free up enough space to run the update.
